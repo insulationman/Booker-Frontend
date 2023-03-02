@@ -19,7 +19,9 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import moment from "moment";
 import { setTime } from "./Utils/SetTime";
 import imageurl from "./assets/horses.png";
-import "moment/locale/sv";
+import "moment/dist/locale/sv";
+import "moment/locale/es";
+
 //american locale in moment
 
 OpenAPI.BASE = "https://bookerino.azurewebsites.net";
@@ -32,8 +34,6 @@ function App() {
   const [selectedDate, setSelectedDate] = useState<Date>(new Date());
   const [activeStartDate, setActiveStartDate] = useState<Date>(new Date());
   const [show, setShow] = useState(false);
-  moment.locale("en");
-
   const {
     formState: { errors },
     handleSubmit,
@@ -41,6 +41,9 @@ function App() {
     register,
     reset,
   } = useForm<Booking>();
+
+  console.log(moment.locales());
+  moment.locale("sv");
 
   useEffect(() => {
     var month = activeStartDate.getMonth() + 1;
@@ -108,15 +111,12 @@ function App() {
       </Row>
       <Row className="mt-3">
         <Col>
-          {selectedDate && (
-            <h3 className="text-center">{selectedDate.toDateString()}</h3>
-          )}
           <ListGroup>
             {events?.filter(
               (e) => e.start && DateIsSame(new Date(e.start), selectedDate)
             ).length === 0 ? (
               <ListGroup.Item className="text-center" variant="success">
-                Inga bokningar
+                Inga bokningar {moment(selectedDate).format("ddd LL")}
               </ListGroup.Item>
             ) : (
               events
@@ -143,7 +143,7 @@ function App() {
                       variant="danger"
                       onClick={() => handleDeleteBooking(e)}
                     >
-                      Ta bort
+                      Avboka
                     </Button>
                   </ListGroup.Item>
                 ))
