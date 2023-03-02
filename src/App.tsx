@@ -126,13 +126,16 @@ function App() {
                     variant="primary"
                   >
                     <div>
-                      <h4>{e.name}</h4>
-                      <p className="m-0">
-                        {moment(e.start).format("hh:mm")} -
+                      <p className="m-0 display-6">
+                        {moment(e.start).format("hh:mm")} -{" "}
                         {moment(e.end).format("hh:mm")}
                       </p>
-                      <small>{e.comment}</small>
+                      <span>
+                        <strong>{e.name} </strong>
+                        {e.comment}
+                      </span>
                     </div>
+                    <div></div>
                     <Button
                       variant="danger"
                       onClick={() => handleDeleteBooking(e)}
