@@ -143,46 +143,54 @@ function App() {
         <Col>
           {selectedDate && (
             <Card>
+              <Card.Header>
+                <h5 className="text-center mb-0">Boka</h5>
+              </Card.Header>
               <Card.Body>
                 <Form onSubmit={handleSubmit(handleUpsertBooking)}>
                   <Form.Group controlId="name">
-                    <Form.Label>Name</Form.Label>
                     <Form.Control
                       type="text"
-                      placeholder="Enter name"
+                      placeholder="Ditt Namn"
                       {...register("name", { required: true })}
                     />
                     {errors.name && <span>This field is required</span>}
                   </Form.Group>
-                  <Form.Group controlId="start">
-                    <Form.Label>Start</Form.Label>
-                    <Form.Control
-                      type="time"
-                      placeholder="Enter start"
-                      onChange={(e) => updateTime("start", e.target.value)}
-                    />
-                    {errors.start && <span>This field is required</span>}
-                  </Form.Group>
-                  <Form.Group controlId="end">
-                    <Form.Label>End</Form.Label>
-                    <Form.Control
-                      type="time"
-                      placeholder="Enter end"
-                      onChange={(e) => updateTime("end", e.target.value)}
-                    />
-                    {errors.end && <span>This field is required</span>}
-                  </Form.Group>
+                  <Row>
+                    <Col>
+                      <Form.Group controlId="start" className="mt-3">
+                        <Form.Control
+                          type="time"
+                          placeholder="Enter start"
+                          onChange={(e) => updateTime("start", e.target.value)}
+                          required
+                        />
+                        {errors.start && <span>This field is required</span>}
+                      </Form.Group>
+                    </Col>
+                    <Col>
+                      <Form.Group controlId="end" className="mt-3">
+                        <Form.Control
+                          type="time"
+                          placeholder="Enter end"
+                          onChange={(e) => updateTime("end", e.target.value)}
+                          required
+                        />
+                        {errors.end && <span>This field is required</span>}
+                      </Form.Group>
+                    </Col>
+                  </Row>
                   <Form.Group controlId="description">
-                    <Form.Label>Description</Form.Label>
                     <Form.Control
                       type="text"
-                      placeholder="Enter comment"
+                      className="mt-3"
+                      placeholder="Kommentar"
                       {...register("comment")}
                     />
                     {errors.comment && <span>This field is required</span>}
                   </Form.Group>
                   <Button className="mt-3 w-100" type="submit">
-                    Submit
+                    Spara
                   </Button>
                 </Form>
               </Card.Body>
@@ -199,7 +207,7 @@ function App() {
         </Modal.Body>
         <Modal.Footer>
           <Button variant="secondary" onClick={() => setShow(false)}>
-            Close
+            Stäng
           </Button>
         </Modal.Footer>
       </Modal>
