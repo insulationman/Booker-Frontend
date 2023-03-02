@@ -123,6 +123,15 @@ function App() {
                 ?.filter(
                   (e) => e.start && DateIsSame(new Date(e.start), selectedDate)
                 )
+                .sort((a, b) => {
+                  if (a.start && b.start) {
+                    return new Date(a.start).getTime() >
+                      new Date(b.start).getTime()
+                      ? 1
+                      : -1;
+                  }
+                  return 0;
+                })
                 .map((e) => (
                   <ListGroup.Item
                     className="d-flex justify-content-between align-items-center"
@@ -155,9 +164,6 @@ function App() {
         <Col>
           {selectedDate && (
             <Card>
-              <Card.Header>
-                <h5 className="text-center mb-0">Boka</h5>
-              </Card.Header>
               <Card.Body>
                 <Form onSubmit={handleSubmit(handleUpsertBooking)}>
                   <Form.Group controlId="name">
@@ -173,7 +179,7 @@ function App() {
                       <Form.Group controlId="start" className="mt-3">
                         <Form.Control
                           type="time"
-                          placeholder="Enter start"
+                          placeholder="Start"
                           onChange={(e) => updateTime("start", e.target.value)}
                           required
                         />
@@ -184,7 +190,7 @@ function App() {
                       <Form.Group controlId="end" className="mt-3">
                         <Form.Control
                           type="time"
-                          placeholder="Enter end"
+                          placeholder="Slut"
                           onChange={(e) => updateTime("end", e.target.value)}
                           required
                         />
@@ -202,7 +208,7 @@ function App() {
                     {errors.comment && <span>This field is required</span>}
                   </Form.Group>
                   <Button className="mt-3 w-100" type="submit">
-                    Spara
+                    Boka
                   </Button>
                 </Form>
               </Card.Body>
