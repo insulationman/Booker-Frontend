@@ -19,6 +19,8 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import moment from "moment";
 import { setTime } from "./Utils/SetTime";
 import imageurl from "./assets/horses.png";
+import "moment/locale/sv";
+//american locale in moment
 
 OpenAPI.BASE = "https://bookerino.azurewebsites.net";
 // OpenAPI.BASE = "http://localhost:5280";
@@ -30,6 +32,7 @@ function App() {
   const [selectedDate, setSelectedDate] = useState<Date>(new Date());
   const [activeStartDate, setActiveStartDate] = useState<Date>(new Date());
   const [show, setShow] = useState(false);
+  moment.locale("en");
 
   const {
     formState: { errors },
@@ -127,8 +130,8 @@ function App() {
                   >
                     <div>
                       <p className="m-0 display-6">
-                        {moment(e.start).format("hh:mm")} -{" "}
-                        {moment(e.end).format("hh:mm")}
+                        {moment(e.start).format("HH:mm")} -{" "}
+                        {moment(e.end).format("HH:mm")}
                       </p>
                       <span>
                         <strong>{e.name} </strong>
@@ -209,7 +212,7 @@ function App() {
       </Row>
       <Modal show={show} onExit={() => setShow(false)}>
         <Modal.Header closeButton onClick={() => setShow(false)}>
-          <Modal.Title>GRATTIS!</Modal.Title>
+          <Modal.Title>Ha ett trevligt möte!</Modal.Title>
         </Modal.Header>
         <Modal.Body>
           <img src={imageurl} alt="horses" className="img-fluid" />
