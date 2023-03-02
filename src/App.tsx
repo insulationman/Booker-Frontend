@@ -10,8 +10,8 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import moment from "moment";
 import { setTime } from "./Utils/SetTime";
 
-// OpenAPI.BASE = "https://bookerino.azurewebsites.net";
-OpenAPI.BASE = "http://localhost:5280";
+OpenAPI.BASE = "https://bookerino.azurewebsites.net";
+// OpenAPI.BASE = "http://localhost:5280";
 
 function App() {
   const [events, setEvents] = useState<Booking[]>();
