@@ -4,11 +4,21 @@ import "react-calendar/dist/Calendar.css";
 import { BookerService, Booking, OpenAPI } from "./generated";
 import { useEffect, useState } from "react";
 import DateIsSame from "./Utils/DateIsSame";
-import { Button, Col, Container, Form, ListGroup, Row } from "react-bootstrap";
+import {
+  Button,
+  Card,
+  Col,
+  Container,
+  Form,
+  ListGroup,
+  Modal,
+  Row,
+} from "react-bootstrap";
 import { useForm } from "react-hook-form";
 import "bootstrap/dist/css/bootstrap.min.css";
 import moment from "moment";
 import { setTime } from "./Utils/SetTime";
+import imageurl from "./assets/horses.png";
 
 OpenAPI.BASE = "https://bookerino.azurewebsites.net";
 // OpenAPI.BASE = "http://localhost:5280";
@@ -17,6 +27,7 @@ function App() {
   const [events, setEvents] = useState<Booking[]>();
   const [selectedDate, setSelectedDate] = useState<Date>(new Date());
   const [activeStartDate, setActiveStartDate] = useState<Date>(new Date());
+  const [show, setShow] = useState(false);
 
   const {
     formState: { errors },
@@ -64,6 +75,7 @@ function App() {
       var year = date.getFullYear();
       handleUpdateEvents({ year, month });
       reset();
+      setShow(true);
     });
   };
 
@@ -130,48 +142,67 @@ function App() {
       <Row className="mt-3">
         <Col>
           {selectedDate && (
-            <Form onSubmit={handleSubmit(handleUpsertBooking)}>
-              <Form.Group controlId="name">
-                <Form.Label>Name</Form.Label>
-                <Form.Control
-                  type="text"
-                  placeholder="Enter name"
-                  {...register("name", { required: true })}
-                />
-                {errors.name && <span>This field is required</span>}
-              </Form.Group>
-              <Form.Group controlId="start">
-                <Form.Label>Start</Form.Label>
-                <Form.Control
-                  type="time"
-                  placeholder="Enter start"
-                  onChange={(e) => updateTime("start", e.target.value)}
-                />
-                {errors.start && <span>This field is required</span>}
-              </Form.Group>
-              <Form.Group controlId="end">
-                <Form.Label>End</Form.Label>
-                <Form.Control
-                  type="time"
-                  placeholder="Enter end"
-                  onChange={(e) => updateTime("end", e.target.value)}
-                />
-                {errors.end && <span>This field is required</span>}
-              </Form.Group>
-              <Form.Group controlId="description">
-                <Form.Label>Description</Form.Label>
-                <Form.Control
-                  type="text"
-                  placeholder="Enter comment"
-                  {...register("comment")}
-                />
-                {errors.comment && <span>This field is required</span>}
-              </Form.Group>
-              <button type="submit">Submit</button>
-            </Form>
+            <Card>
+              <Card.Body>
+                <Form onSubmit={handleSubmit(handleUpsertBooking)}>
+                  <Form.Group controlId="name">
+                    <Form.Label>Name</Form.Label>
+                    <Form.Control
+                      type="text"
+                      placeholder="Enter name"
+                      {...register("name", { required: true })}
+                    />
+                    {errors.name && <span>This field is required</span>}
+                  </Form.Group>
+                  <Form.Group controlId="start">
+                    <Form.Label>Start</Form.Label>
+                    <Form.Control
+                      type="time"
+                      placeholder="Enter start"
+                      onChange={(e) => updateTime("start", e.target.value)}
+                    />
+                    {errors.start && <span>This field is required</span>}
+                  </Form.Group>
+                  <Form.Group controlId="end">
+                    <Form.Label>End</Form.Label>
+                    <Form.Control
+                      type="time"
+                      placeholder="Enter end"
+                      onChange={(e) => updateTime("end", e.target.value)}
+                    />
+                    {errors.end && <span>This field is required</span>}
+                  </Form.Group>
+                  <Form.Group controlId="description">
+                    <Form.Label>Description</Form.Label>
+                    <Form.Control
+                      type="text"
+                      placeholder="Enter comment"
+                      {...register("comment")}
+                    />
+                    {errors.comment && <span>This field is required</span>}
+                  </Form.Group>
+                  <Button className="mt-3 w-100" type="submit">
+                    Submit
+                  </Button>
+                </Form>
+              </Card.Body>
+            </Card>
           )}
         </Col>
       </Row>
+      <Modal show={show} onExit={() => setShow(false)}>
+        <Modal.Header closeButton onClick={() => setShow(false)}>
+          <Modal.Title>GRATTIS!</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          <img src={imageurl} alt="horses" className="img-fluid" />
+        </Modal.Body>
+        <Modal.Footer>
+          <Button variant="secondary" onClick={() => setShow(false)}>
+            Close
+          </Button>
+        </Modal.Footer>
+      </Modal>
     </Container>
   );
 }
