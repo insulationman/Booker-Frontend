@@ -22,6 +22,8 @@ import imageurl from "./assets/horses.png";
 
 OpenAPI.BASE = "https://bookerino.azurewebsites.net";
 // OpenAPI.BASE = "http://localhost:5280";
+var secret = new URLSearchParams(window.location.search).get("secret");
+secret && (OpenAPI.HEADERS = { "X-API-KEY": secret });
 
 function App() {
   const [events, setEvents] = useState<Booking[]>();
@@ -69,14 +71,18 @@ function App() {
   };
 
   const handleUpsertBooking = (booking: Booking) => {
-    BookerService.postBookings(booking).then((booking) => {
-      var date = new Date(booking.start);
-      var month = date.getMonth() + 1;
-      var year = date.getFullYear();
-      handleUpdateEvents({ year, month });
-      reset();
-      setShow(true);
-    });
+    BookerService.postBookings(booking)
+      .then((booking) => {
+        var date = new Date(booking.start);
+        var month = date.getMonth() + 1;
+        var year = date.getFullYear();
+        handleUpdateEvents({ year, month });
+        reset();
+        setShow(true);
+      })
+      .catch((e) => {
+        alert("Något gick fel, försök igen eller inte");
+      });
   };
 
   const updateTime = (key: keyof Booking, time: string) => {
