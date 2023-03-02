@@ -107,7 +107,7 @@ function App() {
               (e) => e.start && DateIsSame(new Date(e.start), selectedDate)
             ).length === 0 ? (
               <ListGroup.Item className="text-center" variant="success">
-                No bookings
+                Inga bokningar
               </ListGroup.Item>
             ) : (
               events
