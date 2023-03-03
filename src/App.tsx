@@ -13,6 +13,7 @@ import {
   ListGroup,
   Modal,
   Row,
+  Spinner,
 } from "react-bootstrap";
 import { useForm } from "react-hook-form";
 import "bootstrap/dist/css/bootstrap.min.css";
@@ -33,6 +34,7 @@ function App() {
   const [events, setEvents] = useState<Booking[]>();
   const [selectedDate, setSelectedDate] = useState<Date>(new Date());
   const [activeStartDate, setActiveStartDate] = useState<Date>(new Date());
+  const [isLoadingEvents, setIsLoadingEvents] = useState(false);
   const [show, setShow] = useState(false);
   const {
     formState: { errors },
@@ -71,8 +73,15 @@ function App() {
     year: number;
     month: number;
   }) => {
+    setEvents(undefined);
+    let timer = setTimeout(() => setIsLoadingEvents(true), 1000);
+    let clearLoadingTimeout = () => {
+      clearTimeout(timer);
+    };
     BookerService.getBookings(year, month).then((bookings) => {
       setEvents(bookings);
+      setIsLoadingEvents(false);
+      clearLoadingTimeout();
     });
   };
 
@@ -112,6 +121,11 @@ function App() {
       <Row className="mt-3">
         <Col>
           <ListGroup>
+            {isLoadingEvents && (
+              <Row className="d-flex justify-content-center">
+                <Spinner animation="border" />
+              </Row>
+            )}
             {events?.filter(
               (e) => e.start && DateIsSame(new Date(e.start), selectedDate)
             ).length === 0 ? (
